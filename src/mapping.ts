@@ -1,4 +1,3 @@
-declare const Buffer
 
 import { BigInt } from "@graphprotocol/graph-ts"
 import {
@@ -113,11 +112,9 @@ export function handleChanelOpen(call: ChannelOpenCall): void {
   let validators = call.inputs.channel.validators
   let spec = call.inputValues[5].value.toBytes()
 
-  let id =  Buffer.from(
-		crypto.keccak256(
-      EthereumValue.([[creator,tokenAddr]]).toString()
-		)
-  ).toString('hex');
+  let id = crypto.keccak256(
+      call.transaction.input
+		).toString();
   
   let channels = new Channels(`0x${id}`)
   channels.tokenAddr = tokenAddr
