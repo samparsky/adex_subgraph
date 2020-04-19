@@ -1,0 +1,66 @@
+# type ExampleEntity @entity {
+#   id: ID!
+#   count: BigInt!
+#   owner: Bytes! # address
+#   amount: BigInt! # uint256
+# }
+
+type Bond @entity {
+  """ ID transaction hash """
+  id: ID!
+  owner: Bytes!
+  amount: BigInt!
+  poolId: Bytes!
+  nonce: BigInt!
+  slashedAtStart: BigInt!
+}
+
+type Slash @entity {
+  """ ID transaction hash """
+  id: ID!
+  poolId: Bytes!
+  newSlashPts: BigInt!
+}
+
+type UnbondRequests @entity {
+  """ ID transaction hash """
+  id: ID!
+  owner: Bytes!
+  bondId: Bytes!
+  willUnlock: BigInt!
+}
+
+type Unbonded @entity {
+   """ ID transaction hash """
+  id: ID!
+  owner: Bytes!
+  bondId: Bytes!
+}
+
+type ChannelOpen @entity {
+  """" channel id """
+  id: ID!
+}
+
+type ChannelWithdrawExpired @entity {
+ """" channel id """
+  id: ID!
+  amount: BigInt!
+}
+
+type ChannelWithdraw @entity {
+ """" channel id """
+  id: ID!
+  amount: BigInt!
+}
+
+type Channels @entity {
+  """ channel id """
+  id: ID!
+  creator: Bytes!
+  tokenAddr: Bytes!
+  tokenAmount: BigInt!
+  validUntil: BigInt!
+  validators: [Bytes!]
+  spec: Bytes!
+}

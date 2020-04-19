@@ -1,0 +1,20 @@
+{
+  "name": "AdExStaking",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ samparsky/adex-staking",
+    "create-local": "graph create --node http://localhost:8020/ samparsky/adex-staking",
+    "remove-local": "graph remove --node http://localhost:8020/ samparsky/adex-staking",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 samparsky/adex-staking"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.17.1",
+    "@graphprotocol/graph-ts": "0.17.0",
+    "@types/ethereumjs-abi": "^0.6.3",
+    "bn.js": "^5.1.1",
+    "ethereumjs-abi": "^0.6.8",
+    "js-sha3": "^0.8.0"
+  }
+}

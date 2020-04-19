@@ -1,0 +1,63 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Staking
+    network: mainnet
+    source:
+      address: "0x46ad2d37ceaee1e82b70b867e674b903a4b4ca32"
+      abi: Staking
+      startBlock: 9162625
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - LogBond
+        - LogSlash
+        - LogUnbondRequested
+        - LogUnbonded
+      abis:
+        - name: Staking
+          file: ./abis/Staking.json
+      eventHandlers:
+        - event: LogBond(indexed address,uint256,bytes32,uint256,uint64)
+          handler: handleLogBond
+        - event: LogSlash(indexed bytes32,uint256)
+          handler: handleLogSlash
+        - event: LogUnbondRequested(indexed address,indexed bytes32,uint64)
+          handler: handleLogUnbondRequested
+        - event: LogUnbonded(indexed address,indexed bytes32)
+          handler: handleLogUnbonded
+      file: ./src/mapping.ts
+
+  - kind: ethereum/contract
+    name: AdExCore
+    network: mainnet
+    source:
+      address: "0x333420fc6a897356e69b62417cd17ff012177d2b"
+      abi: AdExCore
+      startBlock: 7438381
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - LogChannelOpen
+        - LogChannelWithdrawExpired
+        - LogChannelWithdraw
+      abis:
+        - name: AdExCore
+          file: ./abis/AdExCore.json
+      eventHandlers:
+        - event: LogChannelOpen(indexed bytes32)
+          handler: handleLogChannelOpen
+        - event: LogChannelWithdrawExpired(indexed bytes32,uint256)
+          handler: handleLogChannelWithdrawExpired
+        - event: LogChannelWithdraw(indexed bytes32,uint256)
+          handler: handleLogChannelWithdraw
+      callHandlers:
+        - function: channelOpen(tuple)
+          handler: handleChanelOpen
+      file: ./src/mapping.ts
