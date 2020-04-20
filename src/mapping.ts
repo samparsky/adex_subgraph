@@ -79,9 +79,9 @@ export function handleChanelOpen(call: ChannelOpenCall): void {
 
   let id = crypto.keccak256(
       call.transaction.input
-		).toString();
+		).toHexString();
   
-  let channels = new Channels(`0x${id}`)
+  let channels = new Channels(id)
   channels.tokenAddr = tokenAddr
   channels.creator = creator
   channels.tokenAmount = tokenAmount

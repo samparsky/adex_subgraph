@@ -1,3 +1,14 @@
+type Channels @entity {
+  """channel id"""
+  id: ID!
+  creator: Bytes!
+  tokenAddr: Bytes!
+  tokenAmount: BigInt!
+  validUntil: BigInt!
+  validators: [Bytes!]
+  spec: Bytes!
+}
+
 type Bond @entity {
   """ ID transaction hash """
   id: ID!
@@ -45,15 +56,4 @@ type ChannelWithdraw @entity {
  """" channel id """
   id: ID!
   amount: BigInt!
-}
-
-type Channels @entity {
-  """ channel id """
-  id: ID!
-  creator: Bytes!
-  tokenAddr: Bytes!
-  tokenAmount: BigInt!
-  validUntil: BigInt!
-  validators: [Bytes!]
-  spec: Bytes!
 }
