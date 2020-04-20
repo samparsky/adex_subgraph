@@ -1,4 +1,4 @@
-type Channels @entity {
+type Channel @entity {
   """channel id"""
   id: ID!
   creator: Bytes!
@@ -26,7 +26,7 @@ type Slash @entity {
   newSlashPts: BigInt!
 }
 
-type UnbondRequests @entity {
+type UnbondRequest @entity {
   """ ID transaction hash """
   id: ID!
   owner: Bytes!

@@ -1,5 +1,5 @@
 
-import { BigInt } from "@graphprotocol/graph-ts"
+import { log } from "@graphprotocol/graph-ts"
 import {
   LogBond,
   LogSlash,
@@ -13,7 +13,7 @@ import {
   LogChannelWithdrawExpired,
   ChannelOpenCall,
 } from "../generated/AdExCore/AdExCore"
-import { Bond, Slash, UnbondRequests, Unbonded, ChannelOpen, ChannelWithdraw, ChannelWithdrawExpired, Channels } from "../generated/schema"
+import { Bond, Slash, UnbondRequest, Unbonded, ChannelOpen, ChannelWithdraw, ChannelWithdrawExpired, Channel } from "../generated/schema"
 import {
   crypto,
   EthereumValue
@@ -30,14 +30,14 @@ export function handleLogBond(event: LogBond): void {
 }
 
 export function handleLogSlash(event: LogSlash): void {
-  let slash = new Slash(event.transaction.from.toHex())
+  let slash = new Slash(event.transaction.hash.toHex())
   slash.poolId = event.params.poolId
   slash.newSlashPts = event.params.newSlashPts
   slash.save()
 }
 
 export function handleLogUnbondRequested(event: LogUnbondRequested): void {
-  let unbond = new UnbondRequests(event.transaction.from.toHex())
+  let unbond = new UnbondRequest(event.transaction.hash.toHex())
   unbond.owner = event.params.owner
   unbond.bondId = event.params.bondId
   unbond.willUnlock = event.params.willUnlock
@@ -45,7 +45,7 @@ export function handleLogUnbondRequested(event: LogUnbondRequested): void {
 }
 
 export function handleLogUnbonded(event: LogUnbonded): void {
-  let unbond = new Unbonded(event.transaction.from.toHex())
+  let unbond = new Unbonded(event.transaction.hash.toHex())
   unbond.owner = event.params.owner
   unbond.bondId = event.params.bondId
   unbond.save()
@@ -79,9 +79,16 @@ export function handleChanelOpen(call: ChannelOpenCall): void {
 
   let id = crypto.keccak256(
       call.transaction.input
-		).toHexString();
-  
-  let channels = new Channels(id)
+    ).toHex();
+    
+    log.info("in channel open", [])
+    log.info("transaction input = {}", [call.transaction.input.toHexString()])
+    log.info("id = {}", [id])
+
+  if (!id) {
+    id = call.transaction.hash.toHex()
+  }
+  let channels = new Channel(id)
   channels.tokenAddr = tokenAddr
   channels.creator = creator
   channels.tokenAmount = tokenAmount
