@@ -69,7 +69,7 @@ export function handleLogChannelWithdraw(event: LogChannelWithdraw): void {
   channel.save()
 }
 
-export function handleChanelOpen(call: ChannelOpenCall): void {
+export function handleChannelOpen(call: ChannelOpenCall): void {
   let creator = call.inputs.channel.creator
   let tokenAddr = call.inputs.channel.tokenAddr
   let tokenAmount = call.inputs.channel.tokenAmount
@@ -80,10 +80,6 @@ export function handleChanelOpen(call: ChannelOpenCall): void {
   let id = crypto.keccak256(
       call.transaction.input
     ).toHex();
-    
-    log.info("in channel open", [])
-    log.info("transaction input = {}", [call.transaction.input.toHexString()])
-    log.info("id = {}", [id])
 
   if (!id) {
     id = call.transaction.hash.toHex()

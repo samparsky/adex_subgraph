@@ -14,10 +14,10 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - LogBond
-        - LogSlash
-        - LogUnbondRequested
-        - LogUnbonded
+        - Bond
+        - Slash
+        - UnbondRequest
+        - Unbonded
       abis:
         - name: Staking
           file: ./abis/Staking.json
@@ -44,9 +44,10 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - LogChannelOpen
-        - LogChannelWithdrawExpired
-        - LogChannelWithdraw
+        - Channel
+        - ChannelOpen
+        - ChannelWithdrawExpired
+        - ChannelWithdraw
       abis:
         - name: AdExCore
           file: ./abis/AdExCore.json
@@ -59,5 +60,45 @@ dataSources:
           handler: handleLogChannelWithdraw
       callHandlers:
         - function: channelOpen(tuple)
-          handler: handleChanelOpen
+          handler: handleChannelOpen
       file: ./src/mapping.ts
+
+  - kind: ethereum/contract
+    name: IdentityFactory
+    network: mainnet
+    source:
+      address: "0xd5a1c8a5ea507ea459216ff34939cae3326dba6f"
+      abi: IdentityFactory
+      startBlock: 8989224
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - IdentityFactory
+      abis:
+        - name: IdentityFactory
+          file: ./abis/IdentityFactory.json
+      eventHandlers:
+        - event: LogDeployed(address,uint256)
+          handler: handleLogDeployed
+      file: ./src/identity.ts
+templates:
+  - name: Identity
+    kind: ethereum/contract
+    network: mainnet
+    source:
+      abi: Identity
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      file: ./src/identity.ts
+      entities:
+        - Identity
+      abis:
+        - name: Identity
+          file: ./abis/Identity.json
+      callHandlers:
+        - function: channelOpen(address,tuple)
+          handler: handleChannelOpen
