@@ -6,6 +6,7 @@ type Bond @entity {
   poolId: Bytes!
   nonce: BigInt!
   slashedAtStart: BigInt!
+  timestamp: Int!
 }
 
 type Slash @entity {
@@ -13,6 +14,7 @@ type Slash @entity {
   id: ID!
   poolId: Bytes!
   newSlashPts: BigInt!
+  timestamp: Int!
 }
 
 type UnbondRequest @entity {
@@ -21,13 +23,15 @@ type UnbondRequest @entity {
   owner: Bytes!
   bondId: Bytes!
   willUnlock: BigInt!
+  timestamp: Int!
 }
 
 type Unbonded @entity {
-   """ ID transaction hash """
+  """ ID transaction hash """
   id: ID!
   owner: Bytes!
   bondId: Bytes!
+  timestamp: Int!
 }
 
 type Channel @entity {
@@ -39,6 +43,9 @@ type Channel @entity {
   validUntil: BigInt!
   validators: [Bytes!]
   spec: Bytes!
+  created: Int!
+  withdraw: [ChannelWithdraw!]! @derivedFrom(field: "channel")
+  withdrawExpired: [ChannelWithdrawExpired!]! @derivedFrom(field: "channel")
 }
 
 type ChannelOpen @entity {
@@ -47,17 +54,23 @@ type ChannelOpen @entity {
 }
 
 type ChannelWithdrawExpired @entity {
- """" channel id """
+  """" transaction hash """
   id: ID!
+  channel: Channel!
   amount: BigInt!
+  timestamp: Int!
 }
 
 type ChannelWithdraw @entity {
- """" channel id """
+  """" transaction hash """
   id: ID!
+  channel: Channel!
   amount: BigInt!
+  timestamp: Int!
 }
 
 type Identity @entity {
+  """ id """
   id: ID!
+  timestamp: Int!
 }

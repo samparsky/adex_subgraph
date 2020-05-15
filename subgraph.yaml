@@ -1,6 +1,8 @@
 specVersion: 0.0.2
+description: AdEx Protocol subgraph
 schema:
   file: ./schema.graphql
+
 dataSources:
   - kind: ethereum/contract
     name: Staking
@@ -11,7 +13,7 @@ dataSources:
       startBlock: 9162625
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - Bond
@@ -30,7 +32,7 @@ dataSources:
           handler: handleLogUnbondRequested
         - event: LogUnbonded(indexed address,indexed bytes32)
           handler: handleLogUnbonded
-      file: ./src/mapping.ts
+      file: ./src/staking.ts
 
   - kind: ethereum/contract
     name: AdExCore
@@ -41,7 +43,7 @@ dataSources:
       startBlock: 7438381
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - Channel
@@ -59,9 +61,9 @@ dataSources:
         - event: LogChannelWithdraw(indexed bytes32,uint256)
           handler: handleLogChannelWithdraw
       callHandlers:
-        - function: channelOpen(tuple)
-          handler: handleChannelOpen
-      file: ./src/mapping.ts
+        - function: channelOpen((address,address,uint256,uint256,address[],bytes32))
+          handler: handleChannel
+      file: ./src/adexcore.ts
 
   - kind: ethereum/contract
     name: IdentityFactory
@@ -72,17 +74,18 @@ dataSources:
       startBlock: 8989224
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - IdentityFactory
+        - Identity
       abis:
         - name: IdentityFactory
           file: ./abis/IdentityFactory.json
       eventHandlers:
         - event: LogDeployed(address,uint256)
           handler: handleLogDeployed
-      file: ./src/identity.ts
+      file: ./src/identityfactory.ts
+
 templates:
   - name: Identity
     kind: ethereum/contract
@@ -99,6 +102,9 @@ templates:
       abis:
         - name: Identity
           file: ./abis/Identity.json
-      callHandlers:
-        - function: channelOpen(address,tuple)
-          handler: handleChannelOpen
+      eventHandlers:
+        - event: LogPrivilegeChanged(indexed address,uint8)
+          handler: handleLogPrivilegeChanged
+        - event: LogRoutineAuth(bytes32,bool)
+          handler: handleLogRoutineAuth
+          
