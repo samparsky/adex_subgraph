@@ -41,8 +41,8 @@ type Channel @entity {
   tokenAddr: Bytes!
   tokenAmount: BigInt!
   validUntil: BigInt!
-  validators: [Bytes!]
-  spec: Bytes!
+  validators: [Bytes!]!
+  spec: String!
   created: Int!
   withdraw: [ChannelWithdraw!]! @derivedFrom(field: "channel")
   withdrawExpired: [ChannelWithdrawExpired!]! @derivedFrom(field: "channel")

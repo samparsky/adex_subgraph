@@ -1,5 +1,5 @@
 
-import { log } from "@graphprotocol/graph-ts"
+import { log, ByteArray, Address, Bytes } from "@graphprotocol/graph-ts"
 import {
     LogChannelOpen,
     LogChannelWithdraw,
@@ -17,41 +17,29 @@ export function handleLogChannelOpen (event: LogChannelOpen): void {
 }
 
 export function handleLogChannelWithdrawExpired(event: LogChannelWithdrawExpired): void {
-    let channel = new ChannelWithdrawExpired(event.transaction.hash)
+    let channel = new ChannelWithdrawExpired(event.transaction.hash.toHexString())
     channel.amount = event.params.amount
     channel.channel = event.params.channelId.toHexString()
+    channel.timestamp = event.block.timestamp.toI32()
     channel.save()
 }
 
 export function handleLogChannelWithdraw(event: LogChannelWithdraw): void {
-    let channel = new ChannelWithdraw(event.transaction.hash)
+    let channel = new ChannelWithdraw(event.transaction.hash.toHexString())
     channel.amount = event.params.amount
     channel.channel = event.params.channelId.toHexString()
+    channel.timestamp = event.block.timestamp.toI32()
     channel.save()
 }
 
 export function handleChannel(call: ChannelOpenCall): void {
-    log.debug("invoking handle channel", []);
-    let creator = call.inputs.channel.creator
-    let tokenAddr = call.inputs.channel.tokenAddr
-    let tokenAmount = call.inputs.channel.tokenAmount
-    let validUntil = call.inputs.channel.validUntil
-    let spec = call.inputs[5].value.toBytes()
-
-    let id = crypto.keccak256(
-        call.transaction.input
-    ).toHex();
-
-    if (!id) {
-        id = call.transaction.hash.toHex()
-    }
-
-    let channels = new Channel(id)
-    channels.tokenAddr = tokenAddr
-    channels.creator = creator
-    channels.tokenAmount = tokenAmount
-    channels.validators = call.inputs[4].value.toBytesArray()
-    channels.validUntil = validUntil
-    channels.spec = spec
+    let channels = new Channel(call.transaction.hash.toHex())
+    channels.tokenAddr = call.inputs.channel.tokenAddr
+    channels.creator = call.inputs.channel.creator
+    channels.tokenAmount = call.inputs.channel.tokenAmount
+    channels.created = call.block.timestamp.toI32()
+    channels.validators = call.inputs.channel.validators as Bytes[]
+    channels.validUntil = call.inputs.channel.validUntil
+    channels.spec = call.inputs.channel.spec.toHexString()
     channels.save()
 }
