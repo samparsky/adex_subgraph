@@ -17,14 +17,16 @@ export function handleLogChannelOpen (event: LogChannelOpen): void {
 }
 
 export function handleLogChannelWithdrawExpired(event: LogChannelWithdrawExpired): void {
-    let channel = new ChannelWithdrawExpired(event.params.channelId.toHexString())
+    let channel = new ChannelWithdrawExpired(event.transaction.hash)
     channel.amount = event.params.amount
+    channel.channel = event.params.channelId.toHexString()
     channel.save()
 }
 
 export function handleLogChannelWithdraw(event: LogChannelWithdraw): void {
-    let channel = new ChannelWithdraw(event.params.channelId.toHexString())
+    let channel = new ChannelWithdraw(event.transaction.hash)
     channel.amount = event.params.amount
+    channel.channel = event.params.channelId.toHexString()
     channel.save()
 }
 
