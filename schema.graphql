@@ -35,28 +35,22 @@ type Unbonded @entity {
 }
 
 type Channel @entity {
-  """channel id"""
+  """transaction id"""
   id: ID!
   creator: Bytes!
+  channelId: Bytes!
   tokenAddr: Bytes!
   tokenAmount: BigInt!
   validUntil: BigInt!
   validators: [Bytes!]!
   spec: String!
   created: Int!
-  withdraw: [ChannelWithdraw!]! @derivedFrom(field: "channel")
-  withdrawExpired: [ChannelWithdrawExpired!]! @derivedFrom(field: "channel")
-}
-
-type ChannelOpen @entity {
-  """" channel id """
-  id: ID!
 }
 
 type ChannelWithdrawExpired @entity {
   """" transaction hash """
   id: ID!
-  channel: Channel!
+  channelId: Bytes!
   amount: BigInt!
   timestamp: Int!
 }
@@ -64,7 +58,7 @@ type ChannelWithdrawExpired @entity {
 type ChannelWithdraw @entity {
   """" transaction hash """
   id: ID!
-  channel: Channel!
+  channelId: Bytes!
   amount: BigInt!
   timestamp: Int!
 }
