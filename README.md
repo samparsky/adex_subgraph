@@ -2,7 +2,7 @@
 
 Subgraph for AdEx Network
 
-GrahpQL playgroud Link - 
+GrahpQL playgroud Link - https://thegraph.com/explorer/subgraph/samparsky/adex-protocol
 
 #### Example Query
 
@@ -22,11 +22,3 @@ Fetch all available bonds
 ### License
 
 MIT
-
-Bond -> 
-Unbond -> Bond
-UnbondRequest -> Bond 
-
-Channel -> withdraws, withrawexpired, Identity
-
-Identity -> Channel
