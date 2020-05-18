@@ -78,6 +78,7 @@ type IdentityPrivilege @entity {
   address: Bytes!
   level: Int!
   timestamp: Int!
+  lastUpdateTimestamp: Int!
 }
 
 type IdentityRoutine @entity {
@@ -87,4 +88,5 @@ type IdentityRoutine @entity {
   hash: Bytes!
   authorized: Boolean!
   timestamp: Int!
+  lastUpdateTimestamp: Int!
 }
