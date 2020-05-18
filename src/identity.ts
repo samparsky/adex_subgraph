@@ -2,7 +2,7 @@ import { LogPrivilegeChanged, LogRoutineAuth } from "../generated/templates/Iden
 import { IdentityPrivilege, IdentityRoutine } from '../generated/schema'
 
 export function handleLogPrivilegeChanged(event: LogPrivilegeChanged): void {
-  let id = event.address.toHexString() + event.params.addr.toHexString()
+  let id = event.address.toHexString() + ":" + event.params.addr.toHexString()
   let identity = IdentityPrivilege.load(id)
   if(!identity) {
     identity = new IdentityPrivilege(id)
@@ -12,7 +12,7 @@ export function handleLogPrivilegeChanged(event: LogPrivilegeChanged): void {
     identity.lastUpdateTimestamp = event.block.timestamp.toI32()
   }
 
-  identity.identity = event.address.toHexString()
+  identity.identity = event.address
   identity.address = event.params.addr
   identity.level = event.params.privLevel
   identity.timestamp = event.block.timestamp.toI32()
@@ -20,7 +20,7 @@ export function handleLogPrivilegeChanged(event: LogPrivilegeChanged): void {
 }
 
 export function handleLogRoutineAuth(event: LogRoutineAuth): void {
-    let id = event.address.toHexString() + event.params.hash.toHexString();
+    let id = event.address.toHexString() + ":" + event.params.hash.toHexString();
     let identity = IdentityRoutine.load(id)
 
     if(!identity) {
@@ -31,7 +31,7 @@ export function handleLogRoutineAuth(event: LogRoutineAuth): void {
         identity.lastUpdateTimestamp = event.block.timestamp.toI32()
     }
 
-    identity.identity = event.address.toHexString()
+    identity.identity = event.address
     identity.hash = event.params.hash
     identity.authorized = event.params.authorized
     identity.save()

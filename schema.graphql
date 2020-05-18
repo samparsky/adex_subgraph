@@ -67,14 +67,12 @@ type Identity @entity {
   """ id """
   id: ID!
   timestamp: Int!
-  privilege: [IdentityPrivilege!]! @derivedFrom(field: "identity")
-  routine: [IdentityRoutine!]! @derivedFrom(field: "identity")
 }
 
 type IdentityPrivilege @entity {
   """ id + address """
   id: ID!
-  identity: Identity!
+  identity: Bytes!
   address: Bytes!
   level: Int!
   timestamp: Int!
@@ -84,7 +82,7 @@ type IdentityPrivilege @entity {
 type IdentityRoutine @entity {
   """ id + hash """
   id: ID!
-  identity: Identity!
+  identity: Bytes!
   hash: Bytes!
   authorized: Boolean!
   timestamp: Int!
