@@ -48,7 +48,7 @@ type Channel @entity {
 }
 
 type ChannelWithdrawExpired @entity {
-  """" transaction hash """
+  """ transaction hash """
   id: ID!
   channelId: Bytes!
   amount: BigInt!
@@ -56,7 +56,7 @@ type ChannelWithdrawExpired @entity {
 }
 
 type ChannelWithdraw @entity {
-  """" transaction hash """
+  """ transaction hash """
   id: ID!
   channelId: Bytes!
   amount: BigInt!
@@ -72,7 +72,7 @@ type Identity @entity {
 }
 
 type IdentityPrivilege @entity {
-  """ id """
+  """ id + address """
   id: ID!
   identity: Identity!
   address: Bytes!
@@ -82,7 +82,7 @@ type IdentityPrivilege @entity {
 }
 
 type IdentityRoutine @entity {
-  """ id """
+  """ id + hash """
   id: ID!
   identity: Identity!
   hash: Bytes!
