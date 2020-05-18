@@ -98,7 +98,8 @@ templates:
       language: wasm/assemblyscript
       file: ./src/identity.ts
       entities:
-        - Identity
+        - IdentityPrivilege
+        - IdentityRoutine
       abis:
         - name: Identity
           file: ./abis/Identity.json

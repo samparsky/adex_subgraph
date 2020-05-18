@@ -1,3 +1,32 @@
+type Channel @entity {
+  """transaction id"""
+  id: ID!
+  creator: Bytes!
+  channelId: Bytes!
+  tokenAddr: Bytes!
+  tokenAmount: BigInt!
+  validUntil: BigInt!
+  validators: [Bytes!]!
+  spec: String!
+  created: Int!
+}
+
+type ChannelWithdrawExpired @entity {
+  """ transaction hash """
+  id: ID!
+  channelId: Bytes!
+  amount: BigInt!
+  timestamp: Int!
+}
+
+type ChannelWithdraw @entity {
+  """ transaction hash """
+  id: ID!
+  channelId: Bytes!
+  amount: BigInt!
+  timestamp: Int!
+}
+
 type Bond @entity {
   """ ID transaction hash """
   id: ID!
@@ -31,35 +60,6 @@ type Unbonded @entity {
   id: ID!
   owner: Bytes!
   bondId: Bytes!
-  timestamp: Int!
-}
-
-type Channel @entity {
-  """transaction id"""
-  id: ID!
-  creator: Bytes!
-  channelId: Bytes!
-  tokenAddr: Bytes!
-  tokenAmount: BigInt!
-  validUntil: BigInt!
-  validators: [Bytes!]!
-  spec: String!
-  created: Int!
-}
-
-type ChannelWithdrawExpired @entity {
-  """ transaction hash """
-  id: ID!
-  channelId: Bytes!
-  amount: BigInt!
-  timestamp: Int!
-}
-
-type ChannelWithdraw @entity {
-  """ transaction hash """
-  id: ID!
-  channelId: Bytes!
-  amount: BigInt!
   timestamp: Int!
 }
 
