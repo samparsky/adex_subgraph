@@ -30,6 +30,7 @@ type ChannelWithdraw @entity {
 type Bond @entity {
   """ ID transaction hash """
   id: ID!
+  bondId: Bytes!
   owner: Bytes!
   amount: BigInt!
   poolId: Bytes!

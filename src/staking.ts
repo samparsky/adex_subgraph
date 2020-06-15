@@ -5,11 +5,29 @@ import {
   LogUnbondRequested,
   LogUnbonded,
 } from "../generated/Staking/Staking"
-
+import {crypto, Bytes, log } from '@graphprotocol/graph-ts'
 import { Bond, Slash, UnbondRequest, Unbonded} from "../generated/schema"
 
+function encode(hexString: string): string {
+  // assumes 0x prefixed string
+  let encoded = hexString.slice(2);
+  for (let i = encoded.length + 1; i <= 64; i++ ) {
+    encoded = '0' + encoded
+  }
+  return encoded;
+}
+
 export function handleLogBond(event: LogBond): void {
-  let entity = new Bond(event.transaction.from.toHex())
+  let contractAddressEncoded = encode('0x46ad2d37ceaee1e82b70b867e674b903a4b4ca32');
+  let senderEncoded = encode(event.params.owner.toHexString());
+  let amountEncoded = encode(event.params.amount.toHexString());
+  let poolIdEncoded = encode(event.params.poolId.toHexString());
+  let nonceEncoded = encode(event.params.nonce.toHexString());
+
+  let bondId = crypto.keccak256(Bytes.fromHexString(contractAddressEncoded + senderEncoded + amountEncoded + poolIdEncoded + nonceEncoded))
+
+  let entity = new Bond(event.transaction.hash.toHex())
+  entity.bondId = bondId as Bytes
   entity.owner = event.params.owner
   entity.amount = event.params.amount
   entity.poolId = event.params.poolId

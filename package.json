@@ -4,17 +4,13 @@
   "scripts": {
     "codegen": "npx graph codegen",
     "build": "npx graph build",
-    "deploy": "npx graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ samparsky/adex-protocol",
-    "create-local": "npx graph create --node http://localhost:8020/ samparsky/adex-protocol1",
-    "remove-local": "npx graph remove --node http://localhost:8020/ samparsky/adex-protocol",
-    "deploy-local": "npx graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 samparsky/adex-protocol1"
+    "deploy": "npx graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ adexnetwork/adex-protocol",
+    "create-local": "npx graph create --node http://localhost:8020/ adexnetwork/adex-protocol1",
+    "remove-local": "npx graph remove --node http://localhost:8020/ adexnetwork/adex-protocol",
+    "deploy-local": "npx graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 adexnetwork/adex-protocol1"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.18.0",
-    "@graphprotocol/graph-ts": "0.18.1",
-    "@types/ethereumjs-abi": "^0.6.3",
-    "bn.js": "^5.1.1",
-    "ethereumjs-abi": "^0.6.8",
-    "js-sha3": "^0.8.0"
+    "@graphprotocol/graph-ts": "0.18.1"
   }
 }

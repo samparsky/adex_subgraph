@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: AdEx Protocol subgraph
+description: AdEx is a solution for digital advertising that reduces ad fraud and protects user privacy. It's backbone is the AdEx protocol, which consists of payment channels (AdExCore), simple staking and an accounts system that enables gasless transactions.
 schema:
   file: ./schema.graphql
 
