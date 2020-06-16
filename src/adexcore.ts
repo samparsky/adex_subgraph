@@ -20,7 +20,8 @@ export function handleLogChannelOpen (event: LogChannelOpen): void {
 }
 
 export function handleLogChannelWithdrawExpired(event: LogChannelWithdrawExpired): void {
-    let channel = new ChannelWithdrawExpired(event.transaction.hash.toHexString())
+    let channel = new ChannelWithdrawExpired(event.transaction.hash.toHexString() + ':' + event.params.channelId.toHexString())
+    channel.user = event.transaction.from
     channel.amount = event.params.amount
     channel.channelId = event.params.channelId
     channel.timestamp = event.block.timestamp.toI32()
@@ -28,7 +29,8 @@ export function handleLogChannelWithdrawExpired(event: LogChannelWithdrawExpired
 }
 
 export function handleLogChannelWithdraw(event: LogChannelWithdraw): void {
-    let channel = new ChannelWithdraw(event.transaction.hash.toHexString())
+    let channel = new ChannelWithdraw(event.transaction.hash.toHexString() + ':' + event.transaction.from.toHexString())
+    channel.user = event.transaction.from
     channel.amount = event.params.amount
     channel.channelId = event.params.channelId
     channel.timestamp = event.block.timestamp.toI32()
@@ -40,7 +42,7 @@ export function handleChannel(call: ChannelOpenCall): void {
     channels.tokenAddr = call.inputs.channel.tokenAddr
     channels.creator = call.inputs.channel.creator
     channels.tokenAmount = call.inputs.channel.tokenAmount
-    channels.created = call.block.timestamp.toI32()
+    channels.timestamp = call.block.timestamp.toI32()
     channels.validators = call.inputs.channel.validators as Bytes[]
     channels.validUntil = call.inputs.channel.validUntil
     channels.spec = call.inputs.channel.spec.toHexString()

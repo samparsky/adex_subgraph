@@ -6,7 +6,7 @@ import {
   LogUnbonded,
 } from "../generated/Staking/Staking"
 import {crypto, Bytes, log } from '@graphprotocol/graph-ts'
-import { Bond, Slash, UnbondRequest, Unbonded} from "../generated/schema"
+import { Bond, Slash, UnbondRequest, Unbond} from "../generated/schema"
 
 function encode(hexString: string): string {
   // assumes 0x prefixed string
@@ -26,7 +26,7 @@ export function handleLogBond(event: LogBond): void {
 
   let bondId = crypto.keccak256(Bytes.fromHexString(contractAddressEncoded + senderEncoded + amountEncoded + poolIdEncoded + nonceEncoded))
 
-  let entity = new Bond(event.transaction.hash.toHex())
+  let entity = new Bond(event.transaction.hash.toHexString())
   entity.bondId = bondId as Bytes
   entity.owner = event.params.owner
   entity.amount = event.params.amount
@@ -38,7 +38,7 @@ export function handleLogBond(event: LogBond): void {
 }
 
 export function handleLogSlash(event: LogSlash): void {
-  let slash = new Slash(event.transaction.hash.toHex())
+  let slash = new Slash(event.transaction.hash.toHexString())
   slash.poolId = event.params.poolId
   slash.newSlashPts = event.params.newSlashPts
   slash.timestamp = event.block.timestamp.toI32()
@@ -46,7 +46,7 @@ export function handleLogSlash(event: LogSlash): void {
 }
 
 export function handleLogUnbondRequested(event: LogUnbondRequested): void {
-  let unbond = new UnbondRequest(event.transaction.hash.toHex())
+  let unbond = new UnbondRequest(event.transaction.hash.toHexString() + ':' + event.transaction.from.toHexString())
   unbond.owner = event.params.owner
   unbond.bondId = event.params.bondId
   unbond.willUnlock = event.params.willUnlock
@@ -55,7 +55,7 @@ export function handleLogUnbondRequested(event: LogUnbondRequested): void {
 }
 
 export function handleLogUnbonded(event: LogUnbonded): void {
-  let unbond = new Unbonded(event.transaction.hash.toHex())
+  let unbond = new Unbond(event.transaction.hash.toHexString() + ':' + event.transaction.from.toHexString())
   unbond.owner = event.params.owner
   unbond.bondId = event.params.bondId
   unbond.timestamp = event.block.timestamp.toI32()

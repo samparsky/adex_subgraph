@@ -1,5 +1,11 @@
-type Channel @entity {
-  """transaction id"""
+interface ChannelTransaction {
+  id: ID!
+  channelId: Bytes!
+  timestamp: Int!
+}
+
+type Channel implements ChannelTransaction  @entity {
+  """ transaction id """
   id: ID!
   creator: Bytes!
   channelId: Bytes!
@@ -8,26 +14,36 @@ type Channel @entity {
   validUntil: BigInt!
   validators: [Bytes!]!
   spec: String!
-  created: Int!
+  timestamp: Int!
 }
 
-type ChannelWithdrawExpired @entity {
-  """ transaction hash """
+type ChannelWithdrawExpired implements ChannelTransaction @entity {
+  """ transaction hash + ':' + channeLid """
   id: ID!
+  channelId: Bytes!
+  user: Bytes!
+  amount: BigInt!
+  timestamp: Int!
+}
+
+type ChannelWithdraw implements ChannelTransaction @entity {
+  """ transaction hash + ':' + user """
+  id: ID!
+  user: Bytes!
   channelId: Bytes!
   amount: BigInt!
   timestamp: Int!
 }
 
-type ChannelWithdraw @entity {
-  """ transaction hash """
+interface StakingTransaction {
+  """ ID transaction hash """
   id: ID!
-  channelId: Bytes!
-  amount: BigInt!
+  owner: Bytes!
+  bondId: Bytes!
   timestamp: Int!
 }
 
-type Bond @entity {
+type Bond implements StakingTransaction @entity {
   """ ID transaction hash """
   id: ID!
   bondId: Bytes!
@@ -39,15 +55,7 @@ type Bond @entity {
   timestamp: Int!
 }
 
-type Slash @entity {
-  """ ID transaction hash """
-  id: ID!
-  poolId: Bytes!
-  newSlashPts: BigInt!
-  timestamp: Int!
-}
-
-type UnbondRequest @entity {
+type UnbondRequest implements StakingTransaction @entity {
   """ ID transaction hash """
   id: ID!
   owner: Bytes!
@@ -56,11 +64,19 @@ type UnbondRequest @entity {
   timestamp: Int!
 }
 
-type Unbonded @entity {
+type Unbond implements StakingTransaction @entity {
   """ ID transaction hash """
   id: ID!
   owner: Bytes!
   bondId: Bytes!
+  timestamp: Int!
+}
+
+type Slash @entity {
+  """ ID transaction hash """
+  id: ID!
+  poolId: Bytes!
+  newSlashPts: BigInt!
   timestamp: Int!
 }
 

@@ -10,7 +10,7 @@ export function getOrInitChannel(txid: string): Channel {
         channel.tokenAddr = Bytes.fromI32(0) as Bytes
         channel.creator = Bytes.fromI32(0) as Bytes
         channel.tokenAmount = BigInt.fromI32(0)
-        channel.created = 0
+        channel.timestamp = 0
         channel.validators = []
         channel.validUntil = BigInt.fromI32(0)
         channel.spec = '0'
