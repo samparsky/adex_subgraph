@@ -8,9 +8,9 @@ dataSources:
     name: Staking
     network: mainnet
     source:
-      address: "0x46ad2d37ceaee1e82b70b867e674b903a4b4ca32"
+      address: "0x4846c6837ec670bbd1f5b485471c8f64ecb9c534"
       abi: Staking
-      startBlock: 9162625
+      startBlock: 10593719
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -24,13 +24,13 @@ dataSources:
         - name: Staking
           file: ./abis/Staking.json
       eventHandlers:
-        - event: LogBond(indexed address,uint256,bytes32,uint256,uint64)
+        - event: LogBond(indexed address,uint256,bytes32,uint256,uint64,uint256)
           handler: handleLogBond
-        - event: LogSlash(indexed bytes32,uint256)
+        - event: LogSlash(indexed bytes32,uint256,uint256)
           handler: handleLogSlash
-        - event: LogUnbondRequested(indexed address,indexed bytes32,uint64)
+        - event: LogUnbondRequested(indexed address,indexed bytes32,uint64,uint256)
           handler: handleLogUnbondRequested
-        - event: LogUnbonded(indexed address,indexed bytes32)
+        - event: LogUnbonded(indexed address,indexed bytes32,uint256)
           handler: handleLogUnbonded
       file: ./src/staking.ts
 
@@ -72,6 +72,27 @@ dataSources:
       address: "0xd5a1c8a5ea507ea459216ff34939cae3326dba6f"
       abi: IdentityFactory
       startBlock: 8989224
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Identity
+      abis:
+        - name: IdentityFactory
+          file: ./abis/IdentityFactory.json
+      eventHandlers:
+        - event: LogDeployed(address,uint256)
+          handler: handleLogDeployed
+      file: ./src/identityfactory.ts
+
+  - kind: ethereum/contract
+    name: IdentityStakingFactory
+    network: mainnet
+    source:
+      address: "0x9fe0d438e3c29c7cff949ad8e8da9403a531cc1a"
+      abi: IdentityFactory
+      startBlock: 10592220
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
