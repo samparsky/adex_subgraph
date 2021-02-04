@@ -29,7 +29,7 @@ type ChannelWithdrawExpired implements ChannelTransaction @entity {
 }
 
 type ChannelWithdraw implements ChannelTransaction @entity {
-  """ transaction hash + ':' + user """
+  """ transaction hash + ':' + user + ':' + logIndex """
   id: ID!
   user: Bytes!
   channel: Channel!
