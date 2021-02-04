@@ -1,13 +1,13 @@
 interface ChannelTransaction {
   id: ID!
-  channelId: Bytes!
   timestamp: Int!
 }
 
 type Channel implements ChannelTransaction  @entity {
-  """ transaction id """
+  """ channel id """
   id: ID!
   creator: Bytes!
+  """ channel id """
   channelId: Bytes!
   tokenAddr: Bytes!
   tokenAmount: BigInt!
@@ -15,12 +15,14 @@ type Channel implements ChannelTransaction  @entity {
   validators: [Bytes!]!
   spec: String!
   timestamp: Int!
+  channelWithdraw: [ChannelWithdraw!] @derivedFrom(field: "channel")
+  ChannelWithdrawExpired: [ChannelWithdrawExpired!] @derivedFrom(field: "channel")
 }
 
 type ChannelWithdrawExpired implements ChannelTransaction @entity {
-  """ transaction hash + ':' + channeLid """
+  """ transaction hash + ':' + channeLid + ':' + logIndex """
   id: ID!
-  channelId: Bytes!
+  channel: Channel!
   user: Bytes!
   amount: BigInt!
   timestamp: Int!
@@ -30,7 +32,7 @@ type ChannelWithdraw implements ChannelTransaction @entity {
   """ transaction hash + ':' + user """
   id: ID!
   user: Bytes!
-  channelId: Bytes!
+  channel: Channel!
   amount: BigInt!
   timestamp: Int!
 }
